@@ -48,6 +48,37 @@
             <Footer class="app-footer" v-if="!isFullScreen" />
         </div>
         <TaskList ref="taskListRef" />
+        <button
+            v-if="!isFullScreen"
+            class="ms-theme-toggle"
+            type="button"
+            :title="isDark ? $t('setting.light') : $t('setting.dark')"
+            :aria-label="isDark ? $t('setting.light') : $t('setting.dark')"
+            @click="toggleTheme"
+        >
+            <svg
+                v-if="isDark"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            >
+                <circle cx="12" cy="12" r="5" />
+                <line x1="12" y1="1" x2="12" y2="3" />
+                <line x1="12" y1="21" x2="12" y2="23" />
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+                <line x1="1" y1="12" x2="3" y2="12" />
+                <line x1="21" y1="12" x2="23" y2="12" />
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+            </svg>
+            <svg v-else viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+            </svg>
+        </button>
     </div>
 </template>
 
@@ -70,6 +101,7 @@ const {
     currentNodeAddr,
     entrance,
     isDarkTheme,
+    themeConfig,
     isFullScreen,
     isLoading,
     isMobile,
@@ -80,6 +112,19 @@ const {
     watermarkShow,
 } = useGlobalStore();
 const { switchTheme } = useTheme();
+
+// Microsys: instant light/dark sun-moon toggle.
+const isDark = computed(() => {
+    const theme = themeConfig.value.theme;
+    if (theme === 'dark') return true;
+    if (theme === 'light') return false;
+    return window.matchMedia('(prefers-color-scheme: dark)').matches;
+});
+
+const toggleTheme = () => {
+    themeConfig.value.theme = isDark.value ? 'light' : 'dark';
+    switchTheme();
+};
 
 useResize();
 
@@ -305,4 +350,43 @@ onMounted(() => {
         transition: none;
     }
 }
+
+// Microsys: compact sun/moon theme toggle (floating, always visible on desktop).
+.ms-theme-toggle {
+    position: fixed;
+    top: 16px;
+    right: 22px;
+    z-index: 2000;
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border-radius: 50%;
+    cursor: pointer;
+    color: #0a84ff;
+    background: rgba(255, 255, 255, 0.72);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+    svg {
+        width: 20px;
+        height: 20px;
+    }
+    &:hover {
+        transform: scale(1.08);
+    }
+}
+
+html.dark .ms-theme-toggle {
+    color: #64d2ff;
+    background: rgba(28, 28, 30, 0.55);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 0 24px rgba(10, 132, 255, 0.35), 0 0 48px rgba(100, 210, 255, 0.18);
+}
+
 </style>

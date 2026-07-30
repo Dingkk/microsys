@@ -17,7 +17,7 @@ const GlobalStore = defineStore('GlobalState', {
         themeConfig: {
             panelName: '',
             primary: '#005eeb',
-            theme: 'auto',
+            theme: 'light',
             footer: true,
             themeColor: '',
             title: '',
