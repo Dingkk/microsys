@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Microsys Dashboard — Apple Style</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', sans-serif;
+    background: #0D1117; color: #E6EDF3;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  /* ===== Top Nav ===== */
+  .top-nav {
+    display: flex; justify-content: space-between; align-items: center;
+    height: 60px; background: rgba(22,27,34,.8); backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(48,54,61,.5); padding: 0 24px; gap: 16px;
+    position: sticky; top: 0; z-index: 100;
+  }
+  .nav-left { display: flex; align-items: center; gap: 16px; }
+  .logo-area { display: flex; align-items: center; gap: 10px; }
+  .logo-icon {
+    width: 32px; height: 32px; border-radius: 8px;
+    background: linear-gradient(135deg,#0B6BCB,#0EA5E9);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .logo-text { font-size: 18px; font-weight: 700; color: #fff; letter-spacing: -0.3px; }
+  .nav-divider { width: 1px; height: 24px; background: rgba(48,54,61,.5); }
+  .breadcrumb { display: flex; align-items: center; gap: 8px; font-size: 13px; }
+  .breadcrumb .muted { color: #8B949E; }
+  .breadcrumb .active { color: #E6EDF3; font-weight: 500; }
+  .nav-center { flex: 1; max-width: 480px; display: flex; justify-content: center; }
+  .search-bar {
+    display: flex; align-items: center; width: 100%; height: 36px;
+    background: #21262D; border: 1px solid rgba(48,54,61,.5); border-radius: 10px;
+    padding: 0 12px; gap: 8px; transition: border-color .2s;
+  }
+  .search-bar:focus-within { border-color: #0B6BCB; }
+  .search-bar i { font-size: 14px; color: #6E7681; }
+  .search-bar span { font-size: 13px; color: #6E7681; flex: 1; }
+  .shortcut {
+    height: 20px; padding: 0 8px; border-radius: 6px;
+    background: rgba(48,54,61,.5); font-size: 11px; font-weight: 500; color: #8B949E;
+  }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .icon-btn {
+    width: 36px; height: 36px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; transition: background .15s;
+  }
+  .icon-btn:hover { background: rgba(33,38,45,.8); }
+  .icon-btn i { font-size: 16px; color: #8B949E; }
+  .avatar-btn {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: linear-gradient(135deg,#0B6BCB,#06B6D4);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .avatar-btn i { font-size: 14px; color: #fff; }
+
+  /* ===== Main Body ===== */
+  .main-body { display: flex; min-height: calc(100vh - 60px); }
+
+  /* ===== Sidebar ===== */
+  .sidebar {
+    width: 240px; min-height: 100%;
+    background: rgba(22,27,34,.6); backdrop-filter: blur(12px);
+    border-right: 1px solid rgba(48,54,61,.3);
+    padding: 16px 0; display: flex; flex-direction: column; gap: 4px;
+  }
+  .sidebar-section-title {
+    font-size: 11px; font-weight: 600; color: #6E7681;
+    text-transform: uppercase; letter-spacing: 1.2px;
+    padding: 8px 16px 4px;
+  }
+  .sidebar-item {
+    display: flex; align-items: center; gap: 10px;
+    height: 40px; padding: 0 16px; margin: 0 8px;
+    border-radius: 10px; cursor: pointer;
+    transition: all .15s;
+  }
+  .sidebar-item:hover { background: rgba(33,38,45,.6); }
+  .sidebar-item i { font-size: 16px; color: #8B949E; width: 20px; text-align: center; }
+  .sidebar-item span { font-size: 14px; font-weight: 400; color: #8B949E; }
+  .sidebar-item.active {
+    background: rgba(11,107,203,.15);
+    border-left: 3px solid #0B6BCB;
+  }
+  .sidebar-item.active i { color: #0B6CB8; }
+  .sidebar-item.active span { color: #E6EDF3; font-weight: 600; }
+
+  .sidebar-footer { margin-top: auto; padding: 0 12px 0; border-top: 1px solid rgba(48,54,61,.3); padding-top: 16px; }
+  .server-status-card {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px; border-radius: 12px; background: rgba(33,38,45,.5);
+  }
+  .status-dot { width: 8px; height: 8px; border-radius: 50%; background: #3FB950; animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.5} }
+  .server-info { display: flex; flex-direction: column; gap: 2px; }
+  .server-name { font-size: 12px; font-weight: 500; color: #E6EDF3; }
+  .server-ip { font-size: 11px; color: #6E7681; }
+
+  /* ===== Content Area ===== */
+  .content-area {
+    flex: 1; padding: 28px; display: flex; flex-direction: column; gap: 24px;
+    overflow-y: auto;
+  }
+  .page-header { display: flex; justify-content: space-between; align-items: center; }
+  .header-left { display: flex; flex-direction: column; gap: 4px; }
+  .page-title { font-size: 26px; font-weight: 700; color: #E6EDF3; letter-spacing: -0.5px; }
+  .page-subtitle { font-size: 14px; color: #8B949E; }
+  .header-right { display: flex; gap: 12px; }
+  .btn {
+    display: flex; align-items: center; gap: 8px;
+    height: 36px; padding: 0 16px; border-radius: 10px;
+    cursor: pointer; font-size: 13px; font-weight: 500;
+    border: none; transition: all .15s;
+  }
+  .btn-outline {
+    background: #21262D; border: 1px solid rgba(48,54,61,.5); color: #E6EDF3;
+  }
+  .btn-outline:hover { border-color: #484F58; }
+  .btn-primary {
+    background: linear-gradient(135deg,#0B6BCB,#0EA5E9); color: #fff;
+  }
+  .btn-primary:hover { opacity: .9; transform: translateY(-1px); }
+  .btn i { font-size: 13px; }
+
+  /* ===== Metric Cards Grid ===== */
+  .metrics-grid { display: flex; gap: 16px; }
+  .metric-card {
+    flex: 1; min-height: 140px; padding: 20px;
+    border-radius: 16px; background: #161B22;
+    border: 1px solid rgba(48,54,61,.4);
+    box-shadow: 0 4px 24px rgba(0,0,0,.2);
+    display: flex; flex-direction: column; justify-content: space-between;
+    transition: transform .2s, box-shadow .2s;
+  }
+  .metric-card:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(0,0,0,.3); }
+  .metric-header { display: flex; justify-content: space-between; align-items: center; }
+  .metric-icon-wrap {
+    width: 36px; height: 36px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .metric-icon-wrap i { font-size: 15px; }
+  .metric-change { font-size: 12px; font-weight: 500; }
+  .metric-body { margin-top: 8px; display: flex; flex-direction: column; gap: 6px; }
+  .metric-value { font-size: 28px; font-weight: 700; color: #E6EDF3; letter-spacing: -0.5px; }
+  .metric-label { font-size: 13px; color: #8B949E; }
+  .spark-chart { margin-top: 8px; align-self: stretch; }
+
+  /* Color tokens for metric cards */
+  .mc-cpu .metric-icon-wrap { background: rgba(11,107,203,.15); } .mc-cpu .metric-icon-wrap i { color: #0B6CB8; }
+  .mc-mem .metric-icon-wrap { background: rgba(168,85,247,.15); } .mc-mem .metric-icon-wrap i { color: #A855F7; }
+  .mc-disk .metric-icon-wrap { background: rgba(245,158,11,.15); } .mc-disk .metric-icon-wrap i { color: #F59E0B; }
+  .mc-net .metric-icon-wrap { background: rgba(6,182,212,.15); } .mc-net .metric-icon-wrap i { color: #06B6D4; }
+  .mc-gpu .metric-icon-wrap { background: rgba(63,185,80,.15); } .mc-gpu .metric-icon-wrap i { color: #3FB950; }
+
+  /* ===== Bottom Grid ===== */
+  .bottom-grid { display: flex; gap: 20px; flex: 1; min-h: 0; }
+  .left-column { width: 380px; display: flex; flex-direction: column; gap: 20px; }
+  .right-column { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+
+  /* Card base */
+  .card {
+    border-radius: 16px; background: #161B22;
+    border: 1px solid rgba(48,54,61,.4);
+    padding: 20px; display: flex; flex-direction: column;
+  }
+  .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+  .card-title-row { display: flex; align-items: center; gap: 8px; }
+  .card-title-row i { font-size: 15px; }
+  .card-title { font-size: 16px; font-weight: 600; color: #E6EDF3; }
+  .badge {
+    font-size: 12px; font-weight: 500; padding: 2px 8px; border-radius: 6px;
+  }
+
+  /* Alerts */
+  .alerts-card { flex: 1; }
+  .alerts-list { display: flex; flex-direction: column; gap: 10px; }
+  .alert-item {
+    display: flex; gap: 10px; padding: 12px; border-radius: 12px;
+  }
+  .alert-dot { width: 8px; height: 8px; border-radius: 50%; margin-top: 6px; flex-shrink: 0; }
+  .alert-content { display: flex; flex-direction: column; gap: 3px; flex: 1; }
+  .alert-title { font-size: 13px; font-weight: 600; }
+  .alert-desc { font-size: 12px; color: #8B949E; }
+  .alert-time { font-size: 11px; color: #6E7681; }
+
+  .alert-critical { background: rgba(248,81,73,.08); border: 1px solid rgba(248,81,73,.2); }
+  .alert-critical .alert-dot { background: #F85149; }
+  .alert-critical .alert-title { color: #FF6B6B; }
+
+  .alert-warning { background: rgba(245,158,11,.08); border: 1px solid rgba(245,158,11,.2); }
+  .alert-warning .alert-dot { background: #F59E0B; }
+  .alert-warning .alert-title { color: #FBBF24; }
+
+  .alert-info { background: rgba(11,107,203,.08); border: 1px solid rgba(11,107,203,.2); }
+  .alert-info .alert-dot { background: #0B6BCB; }
+  .alert-info .alert-title { color: #0EA5E9; }
+
+  /* Quick Actions */
+  .quick-actions-card {}
+  .quick-header { display: flex; align-items: center; gap: 8px; margin-bottom: 14px; }
+  .quick-header i { font-size: 15px; color: #0B6CB8; }
+  .quick-actions-grid { display: flex; gap: 10px; }
+  .quick-action-item {
+    flex: 1; height: 72px; border-radius: 12px;
+    background: #21262D; border: 1px solid rgba(48,54,61,.3);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    cursor: pointer; transition: all .15s; gap: 6px;
+  }
+  .quick-action-item:hover { border-color: rgba(11,107,203,.4); transform: translateY(-1px); }
+  .quick-action-item i { font-size: 18px; }
+  .action-label { font-size: 11px; font-weight: 500; color: #8B949E; }
+
+  /* Process Table */
+  .processes-card { flex: 1; min-width: 0; }
+  .processes-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+  .processes-search {
+    display: flex; align-items: center; gap: 6px;
+    height: 32px; padding: 0 10px; border-radius: 8px;
+    background: #21262D; border: 1px solid rgba(48,54,61,.3);
+  }
+  .processes-search i { font-size: 12px; color: #6E7681; }
+  .processes-search span { font-size: 12px; color: #6E7681; }
+
+  .table-header {
+    display: flex; align-items: center; height: 36px; padding: 0 12px;
+    border-radius: 8px; background: rgba(33,38,45,.6);
+  }
+  .th { font-size: 12px; font-weight: 600; color: #8B949E; }
+  .th-pid { width: 70px; } .th-name { flex: 1; } .th-user { width: 90px; }
+  .th-cpu { width: 70px; } .th-mem { width: 70px; } .th-status { width: 70px; } .th-action { width: 60px; text-align: center; }
+
+  .table-body { display: flex; flex-direction: column; gap: 6px; margin-top: 8px; }
+  .table-row {
+    display: flex; align-items: center; height: 44px; padding: 0 12px;
+    border-radius: 8px; transition: background .12s;
+  }
+  .table-row:hover { background: rgba(33,38,45,.4); }
+  .td { font-size: 13px; color: #E6EDF3; }
+  .td-pid { width: 70px; font-weight: 500; color: #8B949E; }
+  .td-name { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .td-user { width: 90px; color: #8B949E; }
+  .td-cpu { width: 70px; }
+  .td-mem { width: 70px; }
+  .td-status { width: 70px; display: flex; align-items: center; gap: 5px; }
+  .status-dot-sm { width: 6px; height: 6px; border-radius: 50%; }
+  .status-text { font-size: 12px; font-weight: 500; }
+  .td-action { width: 60px; text-align: center; cursor: pointer; }
+  .td-action i { font-size: 13px; color: #6E7681; }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #30363D; border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: #484F58; }
+</style>
+</head>
+<body>
+
+<!-- Top Navigation -->
+<nav class="top-nav">
+  <div class="nav-left">
+    <div class="logo-area">
+      <div class="logo-icon"><i class="fas fa-cube"></i></div>
+      <span class="logo-text">Microsys</span>
+    </div>
+    <div class="nav-divider"></div>
+    <div class="breadcrumb">
+      <span class="muted">仪表盘</span>
+      <i class="fas fa-chevron-right" style="font-size:10px;color:#484F58"></i>
+      <span class="active">概览</span>
+    </div>
+  </div>
+  <div class="nav-center">
+    <div class="search-bar">
+      <i class="fas fa-search"></i>
+      <span>搜索功能、设置、文档...</span>
+      <div class="shortcut">⌘K</div>
+    </div>
+  </div>
+  <div class="nav-right">
+    <div class="icon-btn"><i class="fas fa-bell"></i></div>
+    <div class="icon-btn"><i class="fas fa-cog"></i></div>
+    <div class="avatar-btn"><i class="fas fa-user"></i></div>
+  </div>
+</nav>
+
+<div class="main-body">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <p class="sidebar-section-title">主菜单</p>
+    <div class="sidebar-item active"><i class="fas fa-th-large"></i><span>仪表盘</span></div>
+    <div class="sidebar-item"><i class="fas fa-globe"></i><span>网站管理</span></div>
+    <div class="sidebar-item"><i class="fas fa-box"></i><span>容器管理</span></div>
+    <div class="sidebar-item"><i class="fas fa-folder-open"></i><span>文件管理</span></div>
+    <div class="sidebar-item"><i class="fas fa-database"></i><span>数据库</span></div>
+    <div class="sidebar-item"><i class="fas fa-terminal"></i><span>Web 终端</span></div>
+    <p class="sidebar-section-title">系统</p>
+    <div class="sidebar-item"><i class="fas fa-clock"></i><span>计划任务</span></div>
+    <div class="sidebar-item"><i class="fas fa-store"></i><span>应用商店</span></div>
+    <div class="sidebar-item"><i class="fas fa-shield-alt"></i><span>安全中心</span></div>
+    <div class="sidebar-item"><i class="fas fa-fire"></i><span>WAF 防火墙</span></div>
+    <div class="sidebar-footer">
+      <div class="server-status-card">
+        <div class="status-dot"></div>
+        <div class="server-info">
+          <span class="server-name">prod-server-01</span>
+          <span class="server-ip">192.168.1.100</span>
+        </div>
+        <i class="fas fa-chevron-up" style="font-size:10px;color:#6E7681;margin-left:auto"></i>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Content -->
+  <main class="content-area">
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="header-left">
+        <h1 class="page-title">系统概览</h1>
+        <p class="page-subtitle">实时监控服务器运行状态与资源使用情况</p>
+      </div>
+      <div class="header-right">
+        <button class="btn btn-outline"><i class="fas fa-sync-alt"></i>刷新</button>
+        <button class="btn btn-primary"><i class="fas fa-download"></i>导出报告</button>
+      </div>
+    </div>
+
+    <!-- Metrics Cards -->
+    <div class="metrics-grid">
+      <div class="metric-card mc-cpu">
+        <div class="metric-header">
+          <div class="metric-icon-wrap"><i class="fas fa-microchip"></i></div>
+          <span class="metric-change" style="color:#3FB950">+2.3%</span>
+        </div>
+        <div class="metric-body">
+          <span class="metric-value">42.6%</span>
+          <span class="metric-label">CPU 使用率</span>
+        </div>
+        <svg class="spark-chart" viewBox="0 0 200 40" preserveAspectRatio="none" style="width:100%;height:40px">
+          <defs><linearGradient id="cpuG" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0B6CB8" stop-opacity=".3"/><stop offset="100%" stop-color="#0B6CB8" stop-opacity="0"/></linearGradient></defs>
+          <path d="M0,28 Q28,18 57,24 T114,14 T171,22 T200,20 V40 H0Z" fill="url(#cpuG)"/>
+          <path d="M0,28 Q28,18 57,24 T114,14 T171,22 T200,20" fill="none" stroke="#0B6CB8" stroke-width="2"/>
+        </svg>
+      </div>
+      <div class="metric-card mc-mem">
+        <div class="metric-header">
+          <div class="metric-icon-wrap"><i class="fas fa-memory"></i></div>
+          <span class="metric-change" style="color:#F85149">+5.1%</span>
+        </div>
+        <div class="metric-body">
+          <span class="metric-value">6.8 / 16 GB</span>
+          <span class="metric-label">内存使用</span>
+        </div>
+        <svg class="spark-chart" viewBox="0 0 200 40" preserveAspectRatio="none" style="width:100%;height:40px">
+          <defs><linearGradient id="memG" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#A855F7" stop-opacity=".3"/><stop offset="100%" stop-color="#A855F7" stop-opacity="0"/></linearGradient></defs>
+          <path d="M0,17 Q28,14 57,16 T114,8 T171,12 T200,7 V40 H0Z" fill="url(#memG)"/>
+          <path d="M0,17 Q28,14 57,16 T114,8 T171,12 T200,7" fill="none" stroke="#A855F7" stroke-width="2"/>
+        </svg>
+      </div>
+      <div class="metric-card mc-disk">
+        <div class="metric-header">
+          <div class="metric-icon-wrap"><i class="fas fa-hdd"></i></div>
+          <span class="metric-change" style="color:#8B949E">稳定</span>
+        </div>
+        <div class="metric-body">
+          <span class="metric-value">234 / 500 GB</span>
+          <span class="metric-label">磁盘使用</span>
+        </div>
+        <svg class="spark-chart" viewBox="0 0 200 40" preserveAspectRatio="none" style="width:100%;height:40px">
+          <path d="M0,21 L28,21 T57,20 T114,20 T171,20 T200,20" fill="none" stroke="#F59E0B" stroke-width="2"/>
+        </svg>
+      </div>
+      <div class="metric-card mc-net">
+        <div class="metric-header">
+          <div class="metric-icon-wrap"><i class="fas fa-network-wired"></i></div>
+          <span class="metric-change" style="color:#3FB950">正常</span>
+        </div>
+        <div class="metric-body">
+          <span class="metric-value">128 Mbps</span>
+          <span class="metric-label">网络吞吐</span>
+        </div>
+        <svg class="spark-chart" viewBox="0 0 200 40" preserveAspectRatio="none" style="width:100%;height:40px">
+          <defs><linearGradient id="netG" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#06B6D4" stop-opacity=".3"/><stop offset="100%" stop-color="#06B6D4" stop-opacity="0"/></linearGradient></defs>
+          <path d="M0,25 Q28,10 57,18 T114,5 T171,14 T200,17 V40 H0Z" fill="url(#netG)"/>
+          <path d="M0,25 Q28,10 57,18 T114,5 T171,14 T200,17" fill="none" stroke="#06B6D4" stroke-width="2"/>
+        </svg>
+      </div>
+      <div class="metric-card mc-gpu">
+        <div class="metric-header">
+          <div class="metric-icon-wrap"><i class="fas fa-tv"></i></div>
+          <span class="metric-change" style="color:#8B949E">空闲</span>
+        </div>
+        <div class="metric-body">
+          <span class="metric-value">NVIDIA A10</span>
+          <span class="metric-label">GPU 显存 0%</span>
+        </div>
+        <svg class="spark-chart" viewBox="0 0 200 40" preserveAspectRatio="none" style="width:100%;height:40px">
+          <path d="M0,38 L28,38 T57,37 T114,38 T171,38 T200,38" fill="none" stroke="#3FB950" stroke-width="2"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Bottom Grid -->
+    <div class="bottom-grid">
+      <div class="left-column">
+        <!-- Alerts -->
+        <div class="card alerts-card">
+          <div class="card-header">
+            <div class="card-title-row"><i class="fas fa-bell" style="color:#F85149"></i><span class="card-title">最近告警</span></div>
+            <span class="badge" style="color:#F85149;background:rgba(248,81,73,.1)">3 条未读</span>
+          </div>
+          <div class="alerts-list">
+            <div class="alert-item alert-critical">
+              <div class="alert-dot"></div>
+              <div class="alert-content">
+                <span class="alert-title">CPU 持续高负载警告</span>
+                <p class="alert-desc">CPU 使用率连续 15 分钟超过 80%</p>
+                <span class="alert-time">2 分钟前</span>
+              </div>
+            </div>
+            <div class="alert-item alert-warning">
+              <div class="alert-dot"></div>
+              <div class="alert-content">
+                <span class="alert-title">磁盘空间不足预警</span>
+                <p class="alert-desc">/dev/sda1 使用率已达 78%，建议清理</p>
+                <span class="alert-time">15 分钟前</span>
+              </div>
+            </div>
+            <div class="alert-item alert-info">
+              <div class="alert-dot"></div>
+              <div class="alert-content">
+                <span class="alert-title">SSL 证书即将到期</span>
+                <p class="alert-desc">api.example.com 证书将在 7 天后过期</p>
+                <span class="alert-time">1 小时前</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Quick Actions -->
+        <div class="card quick-actions-card">
+          <div class="quick-header"><i class="fas fa-bolt"></i><span class="card-title">快速操作</span></div>
+          <div class="quick-actions-grid">
+            <div class="quick-action-item"><i class="fas fa-redo" style="color:#0B6BCB"></i><span class="action-label">重启服务</span></div>
+            <div class="quick-action-item"><i class="fas fa-shield-alt" style="color:#3FB950"></i><span class="action-label">防火墙</span></div>
+            <div class="quick-action-item"><i class="fas fa-terminal" style="color:#A855F7"></i><span class="action-label">终端</span></div>
+            <div class="quick-action-item"><i class="fas fa-backup" style="color:#F59E0B"></i><span class="action-label">备份</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Processes Table -->
+      <div class="card processes-card">
+        <div class="processes-header">
+          <div class="card-title-row"><i class="fas fa-list-ul" style="color:#0B6CBB"></i><span class="card-title">进程监控</span></div>
+          <div class="processes-search"><i class="fas fa-search"></i><span>搜索进程...</span></div>
+        </div>
+        <div class="table-header">
+          <span class="th th-pid">PID</span>
+          <span class="th th-name">进程名称</span>
+          <span class="th th-user">用户</span>
+          <span class="th th-cpu">CPU</span>
+          <span class="th th-mem">内存</span>
+          <span class="th th-status">状态</span>
+          <span class="th th-action">操作</span>
+        </div>
+        <div class="table-body">
+          <div class="table-row">
+            <span class="td td-pid">1</span><span class="td td-name">systemd</span><span class="td td-user">root</span>
+            <span class="td td-cpu">0.02%</span><span class="td td-mem">12 MB</span>
+            <div class="td td-status"><div class="status-dot-sm" style="background:#3FB950"></div><span class="status-text" style="color:#3FB950">运行</span></div>
+            <div class="td td-action"><i class="fas fa-ellipsis-v"></i></div>
+          </div>
+          <div class="table-row">
+            <span class="td td-pid">892</span><span class="td td-name">nginx</span><span class="td td-user">www-data</span>
+            <span class="td td-cpu">1.24%</span><span class="td td-mem">86 MB</span>
+            <div class="td td-status"><div class="status-dot-sm" style="background:#3FB950"></div><span class="status-text" style="color:#3FB950">运行</span></div>
+            <div class="td td-action"><i class="fas fa-ellipsis-v"></i></div>
+          </div>
+          <div class="table-row">
+            <span class="td td-pid">1024</span><span class="td td-name">mysql</span><span class="td td-user">mysql</span>
+            <span class="td td-cpu">3.81%</span><span class="td td-mem">512 MB</span>
+            <div class="td td-status"><div class="status-dot-sm" style="background:#3FB950"></div><span class="status-text" style="color:#3FB950">运行</span></div>
+            <div class="td td-action"><i class="fas fa-ellipsis-v"></i></div>
+          </div>
+          <div class="table-row">
+            <span class="td td-pid">2156</span><span class="td td-name">docker-proxy</span><span class="td td-user">root</span>
+            <span class="td td-cpu">0.45%</span><span class="td td-mem">24 MB</span>
+            <div class="td td-status"><div class="status-dot-sm" style="background:#3FB950"></div><span class="status-text" style="color:#3FB950">运行</span></div>
+            <div class="td td-action"><i class="fas fa-ellipsis-v"></i></div>
+          </div>
+          <div class="table-row">
+            <span class="td td-pid">5678</span><span class="td td-name">microsys-panel</span><span class="td td-user">microsys</span>
+            <span class="td td-cpu">0.88%</span><span class="td td-mem">64 MB</span>
+            <div class="td td-status"><div class="status-dot-sm" style="background:#3FB950"></div><span class="status-text" style="color:#3FB950">运行</span></div>
+            <div class="td td-action"><i class="fas fa-ellipsis-v"></i></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+</body>
+</html>

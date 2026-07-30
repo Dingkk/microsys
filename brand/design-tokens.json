@@ -1,0 +1,75 @@
+{
+  "meta": {
+    "product": "Microsys",
+    "style": "科技蓝 · 专业运维风",
+    "tokenPrefix": "ms-",
+    "generatedFor": "设计系统源文件（供开发与白标直接使用）",
+    "note": "本文件为设计 token 单一事实来源，web/src/theme.css 为其应用层镜像；白标替换只改此处 + theme.css 的 --ms-color-primary 系列。"
+  },
+  "brand": {
+    "primary": "#0B6BCB",
+    "primaryDark": "#0B4FA0",
+    "primaryLight": "#3A8BDC",
+    "success": "#21A366",
+    "warning": "#E3A008",
+    "danger": "#D83A3A"
+  },
+  "neutral": {
+    "0": "#FFFFFF",
+    "100": "#F2F5F9",
+    "200": "#E3E9F1",
+    "300": "#C8D2DF",
+    "400": "#97A4B6",
+    "500": "#6B7889",
+    "600": "#4A5568",
+    "700": "#333D4D",
+    "800": "#222A36",
+    "900": "#161C26"
+  },
+  "theme": {
+    "dark": {
+      "bgPage": "#0F141C",
+      "bgSurface": "#161C26",
+      "bgElevated": "#222A36",
+      "bgSidebar": "#11161F",
+      "bgHover": "#2A3340",
+      "textPrimary": "#E8EDF3",
+      "textSecondary": "#97A4B6",
+      "border": "#2A3340",
+      "colorPrimary": "#0B6BCB",
+      "colorPrimaryDark": "#0B4FA0"
+    },
+    "light": {
+      "bgPage": "#F2F5F9",
+      "bgSurface": "#FFFFFF",
+      "bgElevated": "#FFFFFF",
+      "bgSidebar": "#0F1A2B",
+      "bgHover": "#E3E9F1",
+      "textPrimary": "#1C2530",
+      "textSecondary": "#6B7889",
+      "border": "#E3E9F1",
+      "colorPrimary": "#0B6BCB",
+      "colorPrimaryDark": "#0B4FA0"
+    }
+  },
+  "radius": { "sm": "4px", "md": "8px", "lg": "12px" },
+  "space": { "sm": "8px", "md": "16px", "lg": "24px" },
+  "shadow": { "card": "0 2px 12px rgba(0,0,0,0.08)" },
+  "typography": {
+    "fontFamily": "Inter, 'PingFang SC', 'Microsoft YaHei', system-ui, -apple-system, sans-serif",
+    "baseSize": "14px",
+    "scale": {
+      "display": "26px",
+      "h1": "20px",
+      "h2": "18px",
+      "body": "14px",
+      "small": "12px"
+    }
+  },
+  "status": {
+    "online": "#21A366",
+    "offline": "#97A4B6",
+    "warning": "#E3A008",
+    "danger": "#D83A3A"
+  }
+}

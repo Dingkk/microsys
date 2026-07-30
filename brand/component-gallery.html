@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Microsys 组件画廊 · Component Gallery</title>
+<style>
+  :root{
+    --ms-color-primary:#0b6bcb; --ms-color-primary-dark:#0b4fa0; --ms-color-primary-light:#3a8bdc;
+    --ms-color-success:#21a366; --ms-color-warning:#e3a008; --ms-color-danger:#d83a3a;
+    --ms-neutral-0:#fff; --ms-neutral-100:#f2f5f9; --ms-neutral-200:#e3e9f1; --ms-neutral-300:#c8d2df;
+    --ms-neutral-400:#97a4b6; --ms-neutral-500:#6b7889; --ms-neutral-600:#4a5568; --ms-neutral-700:#333d4d;
+    --ms-neutral-800:#222a36; --ms-neutral-900:#161c26;
+    --r-sm:4px; --r-md:8px; --r-lg:12px; --sp:16px; --shadow:0 2px 12px rgba(0,0,0,.08);
+  }
+  [data-theme='dark']{--bg-page:#0f141c;--bg-surface:#161c26;--bg-elevated:#222a36;--bg-sidebar:#11161f;--bg-hover:#2a3340;--text-pri:#e8edf3;--text-sec:#97a4b6;--border:#2a3340;--st-on:#21a366;--st-off:#97a4b6;--st-warn:#e3a008;--st-bad:#d83a3a;}
+  [data-theme='light']{--bg-page:#f2f5f9;--bg-surface:#fff;--bg-elevated:#fff;--bg-sidebar:#0f1a2b;--bg-hover:#e3e9f1;--text-pri:#1c2530;--text-sec:#6b7889;--border:#e3e9f1;--st-on:#21a366;--st-off:#97a4b6;--st-warn:#e3a008;--st-bad:#d83a3a;}
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg-page);color:var(--text-pri);font-family:Inter,'PingFang SC','Microsoft YaHei',system-ui,sans-serif;font-size:14px;line-height:1.5;}
+  .wrap{max-width:1000px;margin:0 auto;padding:32px 24px 64px;}
+  h1{font-size:26px;margin:0 0 4px;}
+  .sub{color:var(--text-sec);margin-bottom:8px;}
+  .topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px;}
+  .toggle{cursor:pointer;background:var(--bg-elevated);border:1px solid var(--border);border-radius:20px;padding:6px 14px;color:var(--text-pri);font-size:13px;}
+  h2{font-size:18px;margin:34px 0 14px;padding-left:10px;border-left:3px solid var(--ms-color-primary);}
+  .row{display:flex;gap:12px;flex-wrap:wrap;align-items:center;}
+  .sec{background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:18px;box-shadow:var(--shadow);}
+  /* button */
+  .btn{font-size:13px;border-radius:var(--r-md);padding:8px 16px;border:1px solid transparent;cursor:pointer;}
+  .btn.primary{background:var(--ms-color-primary);color:#fff;}
+  .btn.primary:hover{background:var(--ms-color-primary-light);}
+  .btn.secondary{background:transparent;color:var(--ms-color-primary);border-color:var(--ms-color-primary);}
+  .btn.ghost{background:transparent;color:var(--text-pri);border-color:var(--border);}
+  .btn.danger{background:var(--ms-color-danger);color:#fff;}
+  .btn:disabled{opacity:.45;cursor:not-allowed;}
+  .btn.sm{padding:5px 10px;font-size:12px;}
+  /* input */
+  .field{display:flex;flex-direction:column;gap:4px;min-width:220px;}
+  .field label{font-size:12px;color:var(--text-sec);}
+  .input{background:var(--bg-elevated);border:1px solid var(--border);border-radius:var(--r-md);padding:8px 12px;color:var(--text-pri);font-size:13px;outline:none;}
+  .input:focus{border-color:var(--ms-color-primary);}
+  .input.err{border-color:var(--ms-color-danger);}
+  .input:disabled{opacity:.5;}
+  .hint.err{color:var(--ms-color-danger);font-size:12px;}
+  /* tag */
+  .tag{display:inline-block;padding:3px 10px;border-radius:var(--r-sm);font-size:12px;}
+  .tag.ok{background:rgba(33,163,102,.15);color:var(--ms-color-success);}
+  .tag.warn{background:rgba(227,160,8,.15);color:var(--ms-color-warning);}
+  .tag.bad{background:rgba(216,58,58,.15);color:var(--ms-color-danger);}
+  .tag.info{background:rgba(11,107,203,.15);color:var(--ms-color-primary);}
+  .tag.neutral{background:var(--bg-elevated);color:var(--text-sec);}
+  /* alert */
+  .alert{border-radius:var(--r-md);padding:12px 14px;margin-bottom:10px;font-size:13px;border-left:3px solid;}
+  .alert.ok{background:rgba(33,163,102,.1);border-color:var(--ms-color-success);}
+  .alert.warn{background:rgba(227,160,8,.1);border-color:var(--ms-color-warning);}
+  .alert.bad{background:rgba(216,58,58,.1);border-color:var(--ms-color-danger);}
+  .alert.info{background:rgba(11,107,203,.1);border-color:var(--ms-color-primary);}
+  /* statusdot */
+  .dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px;vertical-align:middle;}
+  .dot.on{background:var(--st-on);} .dot.off{background:var(--st-off);} .dot.warn{background:var(--st-warn);} .dot.bad{background:var(--st-bad);}
+  /* table */
+  table{width:100%;border-collapse:collapse;font-size:13px;}
+  th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--border);}
+  th{color:var(--text-sec);font-weight:600;background:var(--bg-elevated);}
+  tbody tr:hover td{background:var(--bg-hover);}
+  /* card */
+  .card{background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:14px;box-shadow:var(--shadow);}
+  .label{color:var(--text-sec);font-size:12px;}
+  code{background:var(--bg-elevated);padding:1px 6px;border-radius:4px;font-size:12px;color:var(--ms-color-primary-light);}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="topbar">
+    <div>
+      <h1>Microsys 组件画廊</h1>
+      <div class="sub">科技蓝 · 专业运维风 · 深浅双主题 · 开发对照基准</div>
+    </div>
+    <button class="toggle" id="themeBtn">🌙 / ☀️ 切换主题</button>
+  </div>
+
+  <h2>按钮 Button</h2>
+  <div class="sec"><div class="row">
+    <button class="btn primary">主操作</button>
+    <button class="btn secondary">次操作</button>
+    <button class="btn ghost">幽灵</button>
+    <button class="btn danger">危险</button>
+    <button class="btn primary" disabled>禁用</button>
+    <button class="btn primary sm">小号</button>
+  </div></div>
+
+  <h2>输入框 Input</h2>
+  <div class="sec"><div class="row">
+    <div class="field"><label>默认</label><input class="input" value="nginx" /></div>
+    <div class="field"><label>聚焦</label><input class="input" value="聚焦态" /></div>
+    <div class="field"><label>错误</label><input class="input err" value="bad-name" /><span class="hint err">名称含非法字符</span></div>
+    <div class="field"><label>禁用</label><input class="input" value="locked" disabled /></div>
+  </div></div>
+
+  <h2>标签 Tag</h2>
+  <div class="sec"><div class="row">
+    <span class="tag ok">运行中</span><span class="tag warn">高负载</span>
+    <span class="tag bad">已停止</span><span class="tag info">同步中</span>
+    <span class="tag neutral">默认</span>
+  </div></div>
+
+  <h2>告警条 Alert</h2>
+  <div class="sec">
+    <div class="alert ok">✅ 备份任务已完成（site.example.com @ 02:00）</div>
+    <div class="alert warn">⚠️ 节点 node-03 CPU 持续 &gt; 85%</div>
+    <div class="alert bad">🔴 磁盘使用率 92%，请立即清理</div>
+    <div class="alert info">ℹ️ 证书将于 7 天后到期，建议开启自动续期</div>
+  </div>
+
+  <h2>状态点 StatusDot</h2>
+  <div class="sec"><div class="row">
+    <span><span class="dot on"></span>在线</span>
+    <span><span class="dot off"></span>离线</span>
+    <span><span class="dot warn"></span>告警</span>
+    <span><span class="dot bad"></span>故障</span>
+  </div></div>
+
+  <h2>表格 Table</h2>
+  <div class="sec"><table>
+    <thead><tr><th>名称</th><th>类型</th><th>状态</th><th>操作</th></tr></thead>
+    <tbody>
+      <tr><td>nginx-proxy</td><td>容器</td><td><span class="dot on"></span>运行中</td><td><span class="tag info">日志</span> <span class="tag warn">重启</span></td></tr>
+      <tr><td>mysql-5.7</td><td>数据库</td><td><span class="dot on"></span>运行中</td><td><span class="tag info">备份</span> <span class="tag warn">重启</span></td></tr>
+      <tr><td>redis-cache</td><td>缓存</td><td><span class="dot off"></span>已停止</td><td><span class="tag ok">启动</span> <span class="tag bad">删除</span></td></tr>
+    </tbody>
+  </table></div>
+
+  <h2>卡片 Card</h2>
+  <div class="sec"><div class="row">
+    <div class="card" style="flex:1;min-width:160px;"><div class="label">CPU</div><div style="font-size:22px;font-weight:700;margin-top:6px;">23%</div></div>
+    <div class="card" style="flex:1;min-width:160px;"><div class="label">内存</div><div style="font-size:22px;font-weight:700;margin-top:6px;">5.2 / 16 GB</div></div>
+    <div class="card" style="flex:1;min-width:160px;"><div class="label">磁盘</div><div style="font-size:22px;font-weight:700;margin-top:6px;">41%</div></div>
+  </div></div>
+
+  <h2>使用说明</h2>
+  <div class="sec label">
+    Token 源文件：<code>brand/design-tokens.json</code> + <code>brand/tokens.css</code>；应用层镜像：<code>web/src/theme.css</code>。<br/>
+    所有变量以 <code>ms-</code> 前缀命名，白标替换只改主色系列即可全局生效。
+  </div>
+</div>
+<script>
+  document.getElementById('themeBtn').onclick = () => {
+    const h = document.documentElement;
+    h.setAttribute('data-theme', h.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+  };
+</script>
+</body>
+</html>

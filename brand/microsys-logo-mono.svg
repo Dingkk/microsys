@@ -1,0 +1,6 @@
+<svg width="260" height="64" viewBox="0 0 260 64" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Microsys mono">
+  <rect x="8" y="10" width="44" height="44" rx="11" fill="currentColor"/>
+  <path d="M19 42V24.5C19 23.67 19.67 23 20.5 23C21.02 23 21.5 23.27 21.79 23.71L30 36L38.21 23.71C38.5 23.27 38.98 23 39.5 23C40.33 23 41 23.67 41 24.5V42"
+        stroke="#FFFFFF" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <text x="66" y="40" font-family="Inter, 'PingFang SC', system-ui, sans-serif" font-size="26" font-weight="700" letter-spacing="0.3" fill="currentColor">Microsys</text>
+</svg>

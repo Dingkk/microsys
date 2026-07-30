@@ -1,0 +1,75 @@
+/* Microsys 设计 Token —— 单一事实来源（与 brand/design-tokens.json 同步）
+ * 应用层镜像见 web/src/theme.css。白标替换：改 --ms-color-primary 系列 + JSON 即可。
+ * 切换：<html data-theme="dark|light">
+ */
+
+:root {
+  /* 品牌色 */
+  --ms-color-primary: #0b6bcb;
+  --ms-color-primary-dark: #0b4fa0;
+  --ms-color-primary-light: #3a8bdc;
+  --ms-color-success: #21a366;
+  --ms-color-warning: #e3a008;
+  --ms-color-danger: #d83a3a;
+
+  /* 中性灰 0–900 */
+  --ms-color-neutral-0: #ffffff;
+  --ms-color-neutral-100: #f2f5f9;
+  --ms-color-neutral-200: #e3e9f1;
+  --ms-color-neutral-300: #c8d2df;
+  --ms-color-neutral-400: #97a4b6;
+  --ms-color-neutral-500: #6b7889;
+  --ms-color-neutral-600: #4a5568;
+  --ms-color-neutral-700: #333d4d;
+  --ms-color-neutral-800: #222a36;
+  --ms-color-neutral-900: #161c26;
+
+  /* 尺度 */
+  --ms-radius-sm: 4px;
+  --ms-radius-md: 8px;
+  --ms-radius-lg: 12px;
+  --ms-space-sm: 8px;
+  --ms-space-md: 16px;
+  --ms-space-lg: 24px;
+  --ms-shadow-card: 0 2px 12px rgba(0, 0, 0, 0.08);
+
+  /* 字体 */
+  --ms-font: Inter, 'PingFang SC', 'Microsoft YaHei', system-ui, -apple-system, sans-serif;
+  --ms-fs-display: 26px;
+  --ms-fs-h1: 20px;
+  --ms-fs-h2: 18px;
+  --ms-fs-body: 14px;
+  --ms-fs-small: 12px;
+}
+
+/* 深色主题（默认） */
+[data-theme='dark'] {
+  --ms-bg-page: #0f141c;
+  --ms-bg-surface: #161c26;
+  --ms-bg-elevated: #222a36;
+  --ms-bg-sidebar: #11161f;
+  --ms-bg-hover: #2a3340;
+  --ms-text-primary: #e8edf3;
+  --ms-text-secondary: #97a4b6;
+  --ms-border: #2a3340;
+  --ms-status-online: #21a366;
+  --ms-status-offline: #97a4b6;
+  --ms-status-warning: #e3a008;
+  --ms-status-danger: #d83a3a;
+}
+
+/* 浅色主题 */
+[data-theme='light'] {
+  --ms-bg-page: #f2f5f9;
+  --ms-bg-surface: #ffffff;
+  --ms-bg-elevated: #ffffff;
+  --ms-bg-sidebar: #0f1a2b;
+  --ms-bg-hover: #e3e9f1;
+  --ms-text-primary: #1c2530;
+  --ms-text-secondary: #6b7889;
+  --ms-border: #e3e9f1;
+  --ms-status-online: #21a366;
+  --ms-status-offline: #97a4b6;
+  --ms-status-warning: #e3a008;
+  --ms-status-danger: #d83a3a;
+}

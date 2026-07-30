@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Microsys 界面设计稿 · Web + iOS</title>
+<style>
+  :root{
+    --ms-color-primary:#0b6bcb; --ms-color-primary-dark:#0b4fa0; --ms-color-primary-light:#3a8bdc;
+    --ms-color-success:#21a366; --ms-color-warning:#e3a008; --ms-color-danger:#d83a3a;
+    --ms-neutral-0:#fff; --ms-neutral-100:#f2f5f9; --ms-neutral-200:#e3e9f1; --ms-neutral-300:#c8d2df;
+    --ms-neutral-400:#97a4b6; --ms-neutral-500:#6b7889; --ms-neutral-600:#4a5568; --ms-neutral-700:#333d4d;
+    --ms-neutral-800:#222a36; --ms-neutral-900:#161c26;
+    --bg-page:#0f141c; --bg-surface:#161c26; --bg-elevated:#222a36; --bg-sidebar:#11161f; --bg-hover:#2a3340;
+    --text-pri:#e8edf3; --text-sec:#97a4b6; --border:#2a3340;
+    --r-sm:4px; --r-md:8px; --r-lg:12px; --sp:16px; --shadow:0 2px 12px rgba(0,0,0,.08);
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:#0a0e14;color:var(--text-pri);font-family:Inter,'PingFang SC','Microsoft YaHei',system-ui,sans-serif;font-size:14px;line-height:1.5;}
+  .wrap{max-width:1180px;margin:0 auto;padding:32px 24px 64px;}
+  h1{font-size:26px;margin:0 0 4px;font-weight:700;}
+  .sub{color:var(--text-sec);margin-bottom:32px;}
+  h2{font-size:18px;margin:40px 0 16px;padding-left:10px;border-left:3px solid var(--ms-color-primary);}
+  .grid{display:grid;gap:20px;}
+  .cols-2{grid-template-columns:1fr 1fr;}
+  .cols-3{grid-template-columns:repeat(3,1fr);}
+  .card{background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--r-lg);box-shadow:var(--shadow);overflow:hidden;}
+  .card .hd{padding:10px 14px;border-bottom:1px solid var(--border);font-weight:600;display:flex;justify-content:space-between;align-items:center;}
+  .card .bd{padding:14px;}
+  /* Web shell */
+  .web{display:grid;grid-template-columns:188px 1fr;height:430px;background:var(--bg-sidebar);border-radius:var(--r-lg);overflow:hidden;border:1px solid var(--border);}
+  .side{padding:14px 10px;}
+  .logo{display:flex;align-items:center;gap:8px;font-weight:700;color:var(--ms-color-primary);margin-bottom:18px;padding-left:6px;}
+  .navitem{padding:8px 10px;border-radius:var(--r-md);color:var(--text-sec);margin-bottom:4px;font-size:13px;display:flex;align-items:center;gap:8px;}
+  .navitem.active{background:var(--ms-color-primary);color:#fff;}
+  .main{background:var(--bg-page);display:flex;flex-direction:column;}
+  .topbar{height:48px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;padding:0 16px;background:var(--bg-surface);}
+  .topbar .grow{flex:1;}
+  .pill{background:var(--bg-elevated);border:1px solid var(--border);border-radius:20px;padding:4px 12px;color:var(--text-sec);font-size:12px;}
+  .content{padding:16px;overflow:auto;}
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px;}
+  .stat{background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--r-md);padding:12px;}
+  .stat .k{color:var(--text-sec);font-size:12px;}
+  .stat .v{font-size:20px;font-weight:700;margin-top:4px;}
+  .stat .v small{font-size:12px;color:var(--text-sec);font-weight:400;}
+  .chart{background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--r-md);padding:12px;height:160px;}
+  table{width:100%;border-collapse:collapse;font-size:13px;}
+  th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--border);}
+  th{color:var(--text-sec);font-weight:600;background:var(--bg-elevated);}
+  tr:hover td{background:var(--bg-hover);}
+  .tag{display:inline-block;padding:2px 8px;border-radius:var(--r-sm);font-size:12px;}
+  .tag.ok{background:rgba(33,163,102,.15);color:var(--ms-color-success);}
+  .tag.warn{background:rgba(227,160,8,.15);color:var(--ms-color-warning);}
+  .tag.bad{background:rgba(216,58,58,.15);color:var(--ms-color-danger);}
+  .dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;vertical-align:middle;}
+  .dot.ok{background:var(--ms-color-success);} .dot.off{background:var(--ms-neutral-400);} .dot.warn{background:var(--ms-color-warning);}
+  .btn{display:inline-block;background:var(--ms-color-primary);color:#fff;border:none;border-radius:var(--r-md);padding:6px 12px;font-size:13px;cursor:pointer;}
+  /* iOS */
+  .phones{display:flex;gap:28px;flex-wrap:wrap;}
+  .phone{width:280px;height:560px;background:#000;border-radius:38px;padding:12px;box-shadow:0 10px 30px rgba(0,0,0,.4);}
+  .screen{width:100%;height:100%;background:var(--bg-page);border-radius:28px;overflow:hidden;display:flex;flex-direction:column;}
+  .ios-top{height:44px;display:flex;align-items:center;justify-content:center;font-weight:600;border-bottom:1px solid var(--border);background:var(--bg-surface);}
+  .ios-body{flex:1;padding:14px;overflow:auto;}
+  .ios-card{background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--r-md);padding:12px;margin-bottom:12px;}
+  .ios-stat{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+  .ios-stat .v{font-size:18px;font-weight:700;}
+  .bar{height:6px;background:var(--bg-elevated);border-radius:4px;overflow:hidden;margin-top:6px;}
+  .bar > i{display:block;height:100%;background:var(--ms-color-primary);}
+  .alert-item{border-left:3px solid var(--ms-color-danger);background:var(--bg-surface);padding:10px 12px;border-radius:var(--r-sm);margin-bottom:8px;}
+  .quick{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .quick .q{background:var(--bg-elevated);border-radius:var(--r-md);padding:14px;text-align:center;}
+  .quick .q .ico{font-size:22px;}
+  .label{color:var(--text-sec);font-size:12px;}
+  .muted{color:var(--text-sec);}
+  .tagline{color:var(--text-sec);font-size:12px;margin-top:2px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Microsys 界面设计稿</h1>
+  <div class="sub">科技蓝 · 专业运维风 · 深浅双主题 · Web 端与 iOS App 视觉一致（设计稿，非运行截图）</div>
+
+  <h2>Web 端 · 仪表盘（Dashboard）</h2>
+  <div class="card">
+    <div class="web">
+      <div class="side">
+        <div class="logo">▣ Microsys</div>
+        <div class="navitem active">▦ 仪表盘</div>
+        <div class="navitem">▤ 主机</div>
+        <div class="navitem">▢ 容器</div>
+        <div class="navitem">▥ 网站</div>
+        <div class="navitem">▦ 数据库</div>
+        <div class="navitem">▤ 文件</div>
+        <div class="navitem">▢ 安全</div>
+        <div class="navitem">▥ 应用商店</div>
+      </div>
+      <div class="main">
+        <div class="topbar">
+          <span>仪表盘</span><span class="grow"></span>
+          <span class="pill">node-01 · 在线</span>
+          <span class="pill">🌙 深色</span>
+          <span class="pill">🔔 3</span>
+        </div>
+        <div class="content">
+          <div class="stats">
+            <div class="stat"><div class="k">CPU</div><div class="v">23<small>%</small></div></div>
+            <div class="stat"><div class="k">内存</div><div class="v">5.2<small>/16 GB</small></div></div>
+            <div class="stat"><div class="k">磁盘</div><div class="v">41<small>%</small></div></div>
+            <div class="stat"><div class="k">网络</div><div class="v">1.2<small>MB/s</small></div></div>
+          </div>
+          <div class="chart">
+            <svg viewBox="0 0 600 130" width="100%" height="100%">
+              <polyline fill="none" stroke="#0b6bcb" stroke-width="2"
+                points="0,90 60,80 120,95 180,70 240,78 300,55 360,62 420,40 480,52 540,35 600,44"/>
+              <polyline fill="none" stroke="#21a366" stroke-width="2" stroke-dasharray="4 4"
+                points="0,100 60,96 120,104 180,92 240,98 300,88 360,94 420,82 480,90 540,80 600,86"/>
+            </svg>
+            <div class="tagline">CPU / 内存 趋势（近 1h，采集间隔 5s）</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h2>Web 端 · 容器管理 / 文件管理</h2>
+  <div class="grid cols-2">
+    <div class="card">
+      <div class="hd">容器管理 <span class="btn">+ 创建</span></div>
+      <div class="bd">
+        <table>
+          <thead><tr><th>名称</th><th>镜像</th><th>状态</th><th>操作</th></tr></thead>
+          <tbody>
+            <tr><td>nginx-proxy</td><td>nginx:1.27</td><td><span class="dot ok"></span>运行中</td><td><span class="tag ok">日志</span> <span class="tag warn">重启</span></td></tr>
+            <tr><td>mysql-5.7</td><td>mysql:5.7</td><td><span class="dot ok"></span>运行中</td><td><span class="tag ok">日志</span> <span class="tag warn">重启</span></td></tr>
+            <tr><td>redis-cache</td><td>redis:7</td><td><span class="dot off"></span>已停止</td><td><span class="tag ok">启动</span> <span class="tag bad">删除</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="card">
+      <div class="hd">文件管理 <span class="pill">/opt/microsys</span></div>
+      <div class="bd">
+        <table>
+          <thead><tr><th>名称</th><th>大小</th><th>权限</th></tr></thead>
+          <tbody>
+            <tr><td>📁 backups</td><td>—</td><td>755</td></tr>
+            <tr><td>📁 logs</td><td>—</td><td>755</td></tr>
+            <tr><td>📄 config.yaml</td><td>2.1 KB</td><td>644</td></tr>
+            <tr><td>📄 app.log</td><td>118 KB</td><td>644</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <h2>Web 端 · P1 概念（安全中心 / 多节点）</h2>
+  <div class="grid cols-2">
+    <div class="card">
+      <div class="hd">WAF 安全中心 <span class="tag bad">拦截 12</span></div>
+      <div class="bd">
+        <div class="label">今日拦截趋势</div>
+        <div class="chart" style="height:120px;">
+          <svg viewBox="0 0 600 90" width="100%" height="100%">
+            <rect x="20" y="60" width="30" height="30" fill="#d83a3a" opacity=".7"/>
+            <rect x="80" y="40" width="30" height="50" fill="#d83a3a" opacity=".7"/>
+            <rect x="140" y="55" width="30" height="35" fill="#d83a3a" opacity=".7"/>
+            <rect x="200" y="30" width="30" height="60" fill="#d83a3a" opacity=".7"/>
+            <rect x="260" y="50" width="30" height="40" fill="#d83a3a" opacity=".7"/>
+            <rect x="320" y="20" width="30" height="70" fill="#d83a3a" opacity=".7"/>
+            <rect x="380" y="45" width="30" height="45" fill="#d83a3a" opacity=".7"/>
+            <rect x="440" y="35" width="30" height="55" fill="#d83a3a" opacity=".7"/>
+            <rect x="500" y="58" width="30" height="32" fill="#d83a3a" opacity=".7"/>
+          </svg>
+        </div>
+        <div class="label" style="margin-top:8px;">地区限制 · 自定义 ACL · 防篡改监控：规划中（P1）</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="hd">多节点纳管 <span class="tag ok">3 在线</span></div>
+      <div class="bd">
+        <table>
+          <thead><tr><th>节点</th><th>状态</th><th>负载</th></tr></thead>
+          <tbody>
+            <tr><td>node-01 (本地)</td><td><span class="dot ok"></span>在线</td><td>23%</td></tr>
+            <tr><td>node-02 (腾讯云)</td><td><span class="dot ok"></span>在线</td><td>41%</td></tr>
+            <tr><td>node-03 (阿里云)</td><td><span class="dot warn"></span>高负载</td><td>88%</td></tr>
+          </tbody>
+        </table>
+        <div class="label" style="margin-top:8px;">跨节点文件互传 · 主从复制：规划中（P1，mTLS + 节点令牌）</div>
+      </div>
+    </div>
+  </div>
+
+  <h2>iOS App · 关键页面</h2>
+  <div class="phones">
+    <div class="phone"><div class="screen">
+      <div class="ios-top">登录</div>
+      <div class="ios-body">
+        <div class="ios-card"><div class="label">服务器地址</div><div>https://panel.example.com</div></div>
+        <div class="ios-card"><div class="label">账号</div><div>admin</div></div>
+        <div class="ios-card"><div class="label">密码</div><div>••••••••</div></div>
+        <div class="ios-card"><div class="label">双因素 (TOTP)</div><div>123456</div></div>
+        <div class="btn" style="width:100%;text-align:center;padding:10px;">登录</div>
+        <div class="tagline" style="margin-top:10px;text-align:center;">首次登录强制改密 · 支持自定义端口 / HTTPS</div>
+      </div>
+    </div></div>
+
+    <div class="phone"><div class="screen">
+      <div class="ios-top">概览</div>
+      <div class="ios-body">
+        <div class="ios-card"><div class="ios-stat"><span class="label">CPU</span><span class="v">23%</span></div><div class="bar"><i style="width:23%"></i></div></div>
+        <div class="ios-card"><div class="ios-stat"><span class="label">内存</span><span class="v">33%</span></div><div class="bar"><i style="width:33%"></i></div></div>
+        <div class="ios-card"><div class="ios-stat"><span class="label">磁盘</span><span class="v">41%</span></div><div class="bar"><i style="width:41%"></i></div></div>
+        <div class="ios-card"><div class="label">node-01 · <span style="color:var(--ms-color-success)">在线</span></div><div class="muted">网络 1.2 MB/s · 容器 3 · 站点 5</div></div>
+      </div>
+    </div></div>
+
+    <div class="phone"><div class="screen">
+      <div class="ios-top">告警</div>
+      <div class="ios-body">
+        <div class="alert-item"><div style="font-weight:600;">🔴 磁盘使用率 88%</div><div class="muted">node-03 · 2 分钟前</div></div>
+        <div class="alert-item" style="border-left-color:var(--ms-color-warning)"><div style="font-weight:600;">🟡 容器 redis-cache 已停止</div><div class="muted">node-01 · 15 分钟前</div></div>
+        <div class="alert-item" style="border-left-color:var(--ms-color-primary)"><div style="font-weight:600;">🔵 证书 7 天内到期</div><div class="muted">site.example.com · 1 小时前</div></div>
+        <div class="tagline">邮件 / 企业微信 / 钉钉 / 飞书 / 短信：规划中（P1 发送端）</div>
+      </div>
+    </div></div>
+
+    <div class="phone"><div class="screen">
+      <div class="ios-top">快捷操作</div>
+      <div class="ios-body">
+        <div class="quick">
+          <div class="q"><div class="ico">🔄</div><div class="label">重启服务</div></div>
+          <div class="q"><div class="ico">🛡️</div><div class="label">防火墙开关</div></div>
+          <div class="q"><div class="ico">💾</div><div class="label">立即备份</div></div>
+          <div class="q"><div class="ico">📟</div><div class="label">Web 终端</div></div>
+        </div>
+        <div class="ios-card" style="margin-top:12px;"><div class="label">节点切换</div><div>node-01 ▾</div></div>
+        <div class="tagline">快捷操作 / 节点切换：P0 范围（iOS）</div>
+      </div>
+    </div></div>
+  </div>
+
+  <h2>说明</h2>
+  <div class="card"><div class="bd muted">
+    以上为设计稿（非运行态截图），用于对齐 Web 与 iOS 双端视觉基准。实际 Web 端 MVP 已落地登录 / 仪表盘 / 容器 / 文件页（见 <code>microsys/web</code>），
+    iOS 客户端本轮仅预留 REST 边界（见 <code>docs/ARCHITECTURE.md</code>），App 实现列入后续迭代。主题 token 与 <code>web/src/theme.css</code> 完全一致。
+  </div></div>
+</div>
+</body>
+</html>
