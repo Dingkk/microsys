@@ -1,0 +1,16 @@
+FROM alpine:3.19
+
+RUN apk add --no-cache python3
+
+RUN mkdir -p /opt/microsys /etc/1panel
+
+COPY bin/1panel-agent /opt/microsys/bin/1panel-agent
+COPY bin/agent_relay.py /opt/microsys/bin/agent_relay.py
+COPY docker/agent-entry.sh /opt/microsys/bin/agent-entry.sh
+
+RUN chmod +x /opt/microsys/bin/1panel-agent /opt/microsys/bin/agent-entry.sh
+
+WORKDIR /opt/microsys
+EXPOSE 9998
+
+CMD ["/opt/microsys/bin/agent-entry.sh"]

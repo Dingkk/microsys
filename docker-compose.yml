@@ -1,0 +1,32 @@
+# Microsys 单容器生产部署（与当前运行方案一致）
+# 用法：cd /opt/microsys && docker compose up -d
+# 依赖镜像：microsys-all:v4（含 core/agent/relay/nginx + docker-cli，已删 alpine-release）
+version: '3.8'
+
+services:
+  microsys-all:
+    image: microsys-all:v4
+    container_name: microsys-all
+    restart: unless-stopped
+    network_mode: host
+    pid: host
+    uts: host
+    ipc: host
+    privileged: true
+    volumes:
+      # 数据（SQLite / 日志 / 应用商店）
+      - /opt/microsys/1panel:/opt/microsys/1panel
+      # SPA 静态文件（构建产物，只读）
+      - /opt/microsys/web:/opt/microsys/web:ro
+      # 中继 + 鉴权网关（改动后重启容器生效）
+      - /opt/microsys/bin/agent_relay.py:/opt/microsys/bin/agent_relay.py:ro
+      # agent socket 目录（宿主共享）
+      - /etc/1panel:/etc/1panel
+      # core 配置（含 LANGUAGE=zh / ORIGINAL_ENTRANCE）
+      - /usr/local/bin/1pctl:/usr/local/bin/1pctl:ro
+      # 宿主数据视角
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /etc/os-release:/etc/os-release:ro
+      - /etc/kylin-release:/etc/kylin-release:ro
+    environment:
+      - TZ=Asia/Shanghai

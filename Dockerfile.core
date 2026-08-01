@@ -1,0 +1,11 @@
+FROM alpine:3.19
+
+RUN mkdir -p /opt/microsys
+
+COPY bin/1panel-core /opt/microsys/bin/1panel-core
+RUN chmod +x /opt/microsys/bin/1panel-core
+
+WORKDIR /opt/microsys
+EXPOSE 9999
+
+CMD ["/opt/microsys/bin/1panel-core"]
