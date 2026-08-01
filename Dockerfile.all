@@ -9,6 +9,12 @@ RUN apk add --no-cache \
         curl \
         docker-cli \
         docker-cli-compose \
+        util-linux \
+        parted \
+        e2fsprogs \
+        xfsprogs \
+        btrfs-progs \
+        gptfdisk \
     && rm -f /etc/alpine-release \
     && mkdir -p /opt/microsys \
                 /opt/microsys/bin \
