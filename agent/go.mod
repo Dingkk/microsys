@@ -1,6 +1,6 @@
 module github.com/1Panel-dev/1Panel/agent
 
-go 1.25.10
+go 1.26.11
 
 replace github.com/moby/go-archive => github.com/moby/go-archive v0.1.0
 
@@ -8,7 +8,7 @@ replace github.com/go-acme/lego/v5 => github.com/1Panel-dev/lego/v5 v5.3.1
 
 require (
 	github.com/aliyun/aliyun-oss-go-sdk v3.0.2+incompatible
-	github.com/compose-spec/compose-go/v2 v2.13.0
+	github.com/compose-spec/compose-go/v2 v2.17.0
 	github.com/creack/pty v1.1.24
 	github.com/docker/cli v29.6.2+incompatible
 	github.com/docker/docker v28.5.2+incompatible
@@ -42,7 +42,7 @@ require (
 	github.com/qiniu/go-sdk/v7 v7.26.17
 	github.com/robfig/cron/v3 v3.0.1
 	github.com/shirou/gopsutil/v4 v4.26.6
-	github.com/sirupsen/logrus v1.9.4
+	github.com/sirupsen/logrus v1.10.1
 	github.com/skip2/go-qrcode v0.0.0-20200617195104-da1b6568686e
 	github.com/spf13/afero v1.15.0
 	github.com/spf13/cobra v1.10.2
@@ -54,9 +54,9 @@ require (
 	go.mongodb.org/mongo-driver/v2 v2.8.0
 	golang.org/x/crypto v0.54.0
 	golang.org/x/net v0.57.0
-	golang.org/x/sync v0.22.0
+	golang.org/x/sync v0.24.0
 	golang.org/x/sys v0.47.0
-	golang.org/x/text v0.40.0
+	golang.org/x/text v0.41.0
 	golang.org/x/time v0.15.0
 	google.golang.org/genproto v0.0.0-20260414002931-afd174a4e478
 	gopkg.in/ini.v1 v1.67.3
@@ -214,12 +214,12 @@ require (
 	go.opentelemetry.io/otel/metric v1.43.0 // indirect
 	go.opentelemetry.io/otel/trace v1.43.0 // indirect
 	go.yaml.in/yaml/v3 v3.0.4 // indirect
-	go.yaml.in/yaml/v4 v4.0.0-rc.4 // indirect
+	go.yaml.in/yaml/v4 v4.0.0 // indirect
 	go4.org v0.0.0-20260112195520-a5071408f32f // indirect
 	golang.org/x/arch v0.26.0 // indirect
-	golang.org/x/mod v0.37.0 // indirect
+	golang.org/x/mod v0.38.0 // indirect
 	golang.org/x/oauth2 v0.36.0 // indirect
-	golang.org/x/tools v0.47.0 // indirect
+	golang.org/x/tools v0.48.0 // indirect
 	google.golang.org/protobuf v1.36.11 // indirect
 	modernc.org/fileutil v1.4.0 // indirect
 	modernc.org/libc v1.72.0 // indirect
